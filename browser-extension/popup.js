@@ -23,5 +23,25 @@ copyButton.addEventListener("click", async () => {
     return;
   }
 
-  statusMessage.textContent = response.text;
+statusMessage.textContent = response.text;
+
+try {
+  const serverResponse = await fetch("http://localhost:3000/save-text", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      text: response.text,
+    }),
+  });
+
+  const result = await serverResponse.json();
+
+  if (!serverResponse.ok) {
+    console.error(result.message);
+  }
+} catch (error) {
+  console.error("Serverga yuborishda xatolik:", error);
+}
 });
